@@ -1,8 +1,10 @@
 import { useContext } from "react";
 import { AuthContext } from "../../provaider/AuthProvider/AuthProvaider";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const {singinUser} = useContext(AuthContext)
+  const naviget = useNavigate()
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -11,7 +13,11 @@ const Login = () => {
     console.log(email, pass);
 
     singinUser(email, pass)
-    .then(result => console.log(result.user))
+    .then(result => {
+      console.log(result.user)
+      e.target.reset()
+      naviget('/')
+    })
     .catch(error => console.log(error.message))
   };
 

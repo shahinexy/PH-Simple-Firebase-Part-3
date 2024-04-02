@@ -3,14 +3,20 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../../provaider/AuthProvider/AuthProvaider";
 
 const NavBar = () => {
+  const {user, logOut} = useContext(AuthContext)
+  
     const navItems = <>
         <li><Link to={'/'}>Home</Link></li>
         <li><Link to={'/login'}>Login</Link></li>
         <li><Link to={'/register'}>Register</Link></li>
         <li><Link to={'/orders'}>Orders</Link></li>
+        {
+          user && <>
+            <li><Link to={'/profile'}>Profile</Link></li>
+            <li><Link to={'/dashboard'}>Dashboard</Link></li>
+          </>
+        }
     </>
-
-  const {user, logOut} = useContext(AuthContext)
 
   const handleLogOut = () =>{
     logOut()
