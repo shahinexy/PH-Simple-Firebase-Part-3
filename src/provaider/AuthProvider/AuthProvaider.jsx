@@ -1,21 +1,51 @@
-import { createContext } from "react";
-import PropTypes from 'prop-types';
+import { createContext, useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import auth from "../../firebase.config";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
 
-export const AuthContext = createContext(null)
+export const AuthContext = createContext(null);
 
-const AuthProvaider = ({children}) => {
-    const authInfo = {name: 'shahin alam'}
-    return (
-        <div>
-            <AuthContext.Provider value={authInfo}>
-                {children}
-            </AuthContext.Provider>
-        </div>
-    );
+const AuthProvaider = ({ children }) => {
+  const [user, setUser] = useState(null);
+
+  // create user
+  const createUser = (email, password) => {
+    return createUserWithEmailAndPassword(auth, email, password);
+  };
+  // singin user
+  const singinUser = (email, password) => {
+    return signInWithEmailAndPassword(auth, email, password);
+  };
+  // save user (onAuthStateChanged)
+  useEffect(() => {
+    const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      console.log("observing current user", currentUser);
+    });
+    return () => {
+      unSubscribe();
+    };
+  }, []);
+  // sing out user
+  const logOut = () => {
+    return signOut(auth);
+  };
+
+  const authInfo = { user, createUser, singinUser, logOut };
+  return (
+    <div>
+      <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
+    </div>
+  );
 };
 
-AuthProvaider.propTypes ={
-    children: PropTypes.node
-}
+AuthProvaider.propTypes = {
+  children: PropTypes.node,
+};
 
 export default AuthProvaider;

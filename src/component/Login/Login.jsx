@@ -1,9 +1,18 @@
+import { useContext } from "react";
+import { AuthContext } from "../../provaider/AuthProvider/AuthProvaider";
+
 const Login = () => {
+  const {singinUser} = useContext(AuthContext)
+
   const handleLogin = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const pass = e.target.password.value;
     console.log(email, pass);
+
+    singinUser(email, pass)
+    .then(result => console.log(result.user))
+    .catch(error => console.log(error.message))
   };
 
   return (

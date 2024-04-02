@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../provaider/AuthProvider/AuthProvaider";
 
 const NavBar = () => {
     const navItems = <>
@@ -6,6 +8,14 @@ const NavBar = () => {
         <li><Link to={'/login'}>Login</Link></li>
         <li><Link to={'/register'}>Register</Link></li>
     </>
+
+  const {user, logOut} = useContext(AuthContext)
+
+  const handleLogOut = () =>{
+    logOut()
+    .then(() => console.log('sing Out'))
+    .cathch(error => console.log(error))
+  }
 
     return (
         <div>
@@ -28,7 +38,13 @@ const NavBar = () => {
     </ul>
   </div>
   <div className="navbar-end">
-    <a className="btn">Button</a>
+    {
+      user?.email ? <>
+        <p>{user.email}</p>
+        <button onClick={handleLogOut} className="btn ml-3">Log Out</button>
+      </>
+      : <Link to={'/login'}><button className="btn">Log In</button></Link>
+    }
   </div>
 </div>
             </nav>
