@@ -3,7 +3,7 @@ import { AuthContext } from "../../provaider/AuthProvider/AuthProvaider";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const {singinUser} = useContext(AuthContext)
+  const {singinUser, googleSingin} = useContext(AuthContext)
   const naviget = useNavigate()
 
   const handleLogin = (e) => {
@@ -21,12 +21,23 @@ const Login = () => {
     .catch(error => console.log(error.message))
   };
 
+  const handleGoogleSingin =()=>{
+    googleSingin()
+    .then(result => {
+      const user = result.user;
+      console.log(user);
+    })
+    .catch(error => {
+      console.log(error.message);
+    })
+  }
+
   return (
     <div>
       <div className="my-20 flex justify-center ">
         <div className="hero  bg-base-200">
           <div className="hero-content">
-            <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+            <div className="card shrink-0 w-full p-5 max-w-sm shadow-2xl bg-base-100">
               <form onSubmit={handleLogin} className="card-body">
                 <div className="form-control">
                   <label className="label">
@@ -59,6 +70,9 @@ const Login = () => {
                   <button className="btn btn-primary">Login</button>
                 </div>
               </form>
+              <div>
+              <button onClick={handleGoogleSingin} className="btn">Google</button>
+            </div>
             </div>
           </div>
         </div>

@@ -16,12 +16,13 @@ const Register = () => {
     .then(result => console.log(result.user))
     .catch(error => console.log(error.message))
   };
+
   return (
     <div className="my-20">
       <div  className="hero  bg-base-200 ">
-        <div className="hero-content">
-          <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-            <form onSubmit={handleRegister} className="card-body">
+        <div className="hero-content ">
+          <div className="card shrink-0 w-full p-5 max-w-sm shadow-2xl bg-base-100">
+            <form onSubmit={handleRegister} className="card-body ">
               <div className="form-control">
                 <label className="label">
                   <span className="label-text">Name</span>
